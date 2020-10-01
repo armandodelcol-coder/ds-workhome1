@@ -25,7 +25,7 @@ public class ClientsResource {
             @RequestParam(value = "direction", defaultValue = "ASC") String direction,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
     ) {
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction),orderBy);
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         Page<ClientDTO> list = clientService.findAllPaged(pageRequest);
 
         return ResponseEntity.ok().body(list);
@@ -48,5 +48,12 @@ public class ClientsResource {
                 .toUri();
 
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody ClientDTO dto) {
+        dto = clientService.update(id, dto);
+
+        return ResponseEntity.ok().body(dto);
     }
 }
